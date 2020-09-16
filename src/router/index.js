@@ -3,10 +3,34 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-/* Layout */
 import Layout from '@/layout'
 
-export const constantRoutes = [
+export const routes = [
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/userlist',
+    name: 'User',
+    meta: {
+      title: '用户管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'menu12',
+        component: () => import('@/views/nested/menu1/index'), // Parent router-view
+        name: 'Menu1',
+        meta: { title: '占地方' },
+      },
+      {
+        path: 'userlist',
+        component: () => import('@/views/user/userlist/index'),
+        name: 'Userlist',
+        meta: { title: '用户列表' }
+      }
+    ]
+  },
+
   {
     path: '/login',
     component: () => import('@/views/login/index'),
@@ -65,6 +89,7 @@ export const constantRoutes = [
       }
     ]
   },
+
 
   {
     path: '/nested',
@@ -135,7 +160,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
@@ -143,12 +167,12 @@ export const constantRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: routes
 })
 
 const router = createRouter()
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+
 export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router

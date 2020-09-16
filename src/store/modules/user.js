@@ -30,13 +30,18 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    let obj={
+      username:userInfo.username.trim(),
+      password:userInfo.password
+    }
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
+      login(obj).then(response => {
+        console.log(response)
+        // const { data } = response
+        // console.log(data)
+        commit('SET_TOKEN', response.token)
+        setToken(response.token)
+        resolve(response)
       }).catch(error => {
         reject(error)
       })
@@ -44,25 +49,23 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+  // getInfo({ commit, state }) {
+  //   return new Promise((resolve, reject) => {
+  //     getInfo(state.token).then(response => {
+  //       const { data } = response
 
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
+  //       if (!data) {
+  //         return reject('Verification failed, please Login again.')
+  //       }
+  //       const { name, avatar } = data
+  //       commit('SET_NAME', name)
+  //       commit('SET_AVATAR', avatar)
+  //       resolve(data)
+  //     }).catch(error => {
+  //       reject(error)
+  //     })
+  //   })
+  // },
 
   // user logout
   logout({ commit, state }) {
