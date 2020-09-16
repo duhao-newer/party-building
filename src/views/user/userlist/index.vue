@@ -2,7 +2,7 @@
   <div class="dis">
     <div class="filterBox">
       <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input"></el-input>
-      <el-button type="primary">查询</el-button>
+      <el-button type="primary" @click="getcustomerlist()">查询</el-button>
       <el-button type="success">导入用户</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%">
@@ -25,27 +25,52 @@
 </template>
 <script>
 export default {
+  created() {
+    this.getcustomerlist();
+  },
   data() {
     return {
       value: "",
       input: "",
       tableData: [
         {
-          id: 1,
-          username: "张三",
+          id: 2,
+          username: "1",
           id_card: "42467990054444",
           phone: "13456780924",
           total_score: 3,
           disabled: 0,
         },
       ],
+      page: 1,
+      limit: 10,
     };
+  },
+  methods: {
+    getcustomerlist() {
+      console.log("s")
+      this.$store
+        .dispatch("customer/customers", { page: this.page, limit: this.limit })
+        .then((res) => {
+          if (res.status != 0) {
+            return this.$message.error("用户名或密码错误~");
+          }
+          this.$message({
+            message: "登录成功~",
+            type: "success",
+          });
+          // this.$router.push({ path: this.redirect || "/" });
+        })
+        .catch(() => {
+          // this.loading = false;
+        });
+    },
   },
 };
 </script>
 <style  lang="scss">
-.dis{
-    padding: 20px;
+.dis {
+  padding: 20px;
 }
 .filterBox {
   text-align: left;
@@ -59,9 +84,9 @@ export default {
     margin-left: 20px;
   }
 }
-.block{
-    float:right;
-    margin-top: 20px;
-    padding-right: 20px;;
+.block {
+  float: right;
+  margin-top: 20px;
+  padding-right: 20px;
 }
 </style>
