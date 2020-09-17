@@ -131,7 +131,7 @@ export default {
           this.$store
             .dispatch("user/login", this.loginForm)
             .then((res) => {
-              if (res.status != 0) {
+              if (res!= 0) {
                 return this.$message.error("用户名或密码错误~");
               }
               this.$message({
