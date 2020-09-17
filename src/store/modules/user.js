@@ -1,4 +1,4 @@
-import { login, logout } from '@/api/user'
+import { login ,updatepwd} from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -44,18 +44,28 @@ const actions = {
       })
     })
   },
+  //修改密码
+  changepwd({commit},msg){
+    return new Promise((resolve, reject) => {
+      updatepwd(msg).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
 
+  },
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      // logout(state.token).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
         resolve()
-      }).catch(error => {
-        reject(error)
-      })
+    //   }).catch(error => {
+    //     reject(error)
+    //   })
     })
   },
 

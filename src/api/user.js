@@ -7,10 +7,10 @@ export function login(data) {
     params:data
   })
 }
-
-export function logout() {
+export function updatepwd(data) {
   return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    url: '/admin/changePassword',
+    method: 'post',
+    data
   })
 }
