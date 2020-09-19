@@ -39,6 +39,26 @@ export function openOrClose(data){
     data
   })
 }
+ //批量重置密码
+ export function resetAll(data){
+  return request({
+    url:'/user/batchReset',
+    method:'post',
+    data
+  })
+}
+ //导入党员用户
+ export function uploadExcel(data){
+  return request({
+    url:'/user/uploadExcel',
+    method:'post',
+    contentType: "multipart/form-data",
+    processData: false, //告诉jquery不要对form进行处理
+		contentType: false, //指定为false才能形成正确的Content-Type
+    data
+  })
+}
+
 
 
 
