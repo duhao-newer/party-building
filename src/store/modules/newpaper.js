@@ -1,24 +1,44 @@
-import { customerlist } from '@/api/customer'
+import { newspaperlist, newtype, addnews, delnews } from '@/api/newpaper'
 
-const getDefaultState = () => {
-    return {
-
-    }
-}
-
+const getDefaultState = () => { return {} }
 const state = getDefaultState()
-
-const mutations = {
-
-}
-
+const mutations = {}
 const actions = {
     // 获取新闻列表
-    customers({ commit }, msg) {
+    paperlist({ commit }, msg) {
         return new Promise((resolve, reject) => {
-            customerlist(msg).then(response => {
-                console.log(response)
+            newspaperlist(msg).then(response => {
                 resolve(response)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+    //获取新闻类型
+    newstype({ commit }) {
+        return new Promise((resolve, reject) => {
+            newtype().then(res => {
+                resolve(res)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+    //新增新闻
+    addnewspaper({ commit }, msg) {
+        return new Promise((resolve, reject) => {
+            addnews(msg).then(res => {
+                resolve(res)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+    //删除新闻
+    delnewspaper({ commit }, msg) {
+        return new Promise((resolve, reject) => {
+            delnews(msg).then(res => {
+                resolve(res)
             }).catch(error => {
                 reject(error)
             })

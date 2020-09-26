@@ -2,55 +2,80 @@
   <div class="dis">
     <!-- 查询模板 -->
     <div class="filterBox">
-      <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input"></el-input>
+      <el-input
+        placeholder="请输入内容"
+        prefix-icon="el-icon-search"
+        v-model="input"
+      ></el-input>
       <el-button type="primary" @click="findcustomerByname()">查询</el-button>
-      <el-button type="success" @click="dialogVisible = true">导入用户</el-button>
+      <el-button type="success" @click="dialogVisible = true"
+        >导入用户</el-button
+      >
     </div>
     <!-- 内容表格 -->
     <el-table
       :data="tableData"
       style="width: 100%"
-      :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+      :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
       @selection-change="changeFun"
     >
-      <el-table-column width="80" type="selection" size="medium"></el-table-column>
+      <el-table-column
+        width="80"
+        type="selection"
+        size="medium"
+      ></el-table-column>
       <el-table-column prop="id" label="#" width="80"></el-table-column>
       <el-table-column label="用户名" width="180">
         <template slot-scope="scope">
           <a
             href="#"
-            style="color:#3CB4E5;text-decoration:underline"
-            @click.prevent="userlist(scope) "
-          >{{scope.row.username}}</a>
+            style="color: #3cb4e5; text-decoration: underline"
+            @click.prevent="userlist(scope)"
+            >{{ scope.row.username }}</a
+          >
         </template>
       </el-table-column>
-      <el-table-column prop="id_card" label="证件" width="200"></el-table-column>
+      <el-table-column
+        prop="id_card"
+        label="证件"
+        width="200"
+      ></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
       <el-table-column label="积分">
         <template slot-scope="scope">
-          <el-tag>{{scope.row.total_score}}</el-tag>
+          <el-tag>{{ scope.row.total_score }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.disabled=='0'"
+            v-if="scope.row.disabled == '0'"
             size="mini"
             type="success"
             @click="opendown(scope)"
-          >启用</el-button>
+            >启用</el-button
+          >
           <el-button
-            v-if="scope.row.disabled=='1'"
+            v-if="scope.row.disabled == '1'"
             size="mini"
             @click="opendown(scope)"
             type="danger"
-          >禁止</el-button>
-          <el-button size="mini" type="danger" @click="resets(scope)">密码重置</el-button>
+            >禁止</el-button
+          >
+          <el-button size="mini" type="danger" @click="resets(scope)"
+            >密码重置</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
     <!-- 批量重置密码 -->
-    <el-button type="danger" icon="el-icon-delete" class="del" @click="deleteAll()">批量重置密码</el-button>
+    <el-button
+      type="danger"
+      icon="el-icon-delete"
+      class="del"
+      @click="deleteAll()"
+      >批量重置密码</el-button
+    >
     <!-- 分页模板 -->
     <div class="block">
       <el-pagination
@@ -70,30 +95,30 @@
       <div class="divs">
         <div class="left">
           <img src="@/icons/1.jpg" alt="网络瞌睡了" class="avator" />
-          <p>姓名：{{gridData.username}}</p>
+          <p>姓名：{{ gridData.username }}</p>
           <dl>
-            <dd>电话： {{gridData.phone}}</dd>
-            <dd>QQ： {{gridData.qq_num}}</dd>
-            <dd>微信：{{gridData.wx_num}}</dd>
+            <dd>电话： {{ gridData.phone }}</dd>
+            <dd>QQ： {{ gridData.qq_num }}</dd>
+            <dd>微信：{{ gridData.wx_num }}</dd>
           </dl>
         </div>
         <div class="right">
           <table class="tab">
             <tr class="tr">
               <td>民族：</td>
-              <td>{{gridData.nation}}</td>
+              <td>{{ gridData.nation }}</td>
             </tr>
             <tr class="tr">
               <td>年龄：</td>
-              <td>{{gridData.age}}</td>
+              <td>{{ gridData.age }}</td>
             </tr>
             <tr class="tr">
               <td>性别：</td>
-              <td>{{gridData.sex}}</td>
+              <td>{{ gridData.sex }}</td>
             </tr>
             <tr class="tr">
               <td>党支部：</td>
-              <td>{{gridData.branch_name}}</td>
+              <td>{{ gridData.branch_name }}</td>
             </tr>
             <tr class="tr">
               <td>专业：</td>
@@ -101,30 +126,34 @@
             </tr>
             <tr class="tr">
               <td>学历：</td>
-              <td>{{gridData.education}}</td>
+              <td>{{ gridData.education }}</td>
             </tr>
             <tr class="tr">
               <td>职称：</td>
-              <td>{{gridData.job_rank}}</td>
+              <td>{{ gridData.job_rank }}</td>
             </tr>
             <tr class="tr">
               <td>入党时间：</td>
-              <td>{{gridData.join_party_time}}</td>
+              <td>{{ gridData.join_party_time }}</td>
             </tr>
             <tr class="tr">
               <td>当前积分：</td>
-              <td>{{gridData.total_score}}</td>
+              <td>{{ gridData.total_score }}</td>
             </tr>
             <tr class="tr">
               <td>状态：</td>
-              <td>{{gridData.disabled}}</td>
+              <td>{{ gridData.disabled }}</td>
             </tr>
           </table>
         </div>
       </div>
     </el-dialog>
     <!-- 导入信息模板 -->
-    <el-dialog title="请选择excel文件" :visible.sync="dialogVisible" width="30%">
+    <el-dialog
+      title="请选择excel文件"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
       <el-upload
         class="upload-demo sub"
         drag
@@ -212,7 +241,6 @@ export default {
     },
     //重置密码
     resets(scpoe) {
-      console.log(scpoe.row.id);
       this.$confirm("你确定要重置密码吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -302,6 +330,7 @@ export default {
             .then((res) => {
               if (res.status != 0) {
                 return this.$message.error(res.massage);
+                console.log(res.message);
               }
               this.getcustomerlist();
               this.$message({
@@ -313,12 +342,14 @@ export default {
               });
             });
         })
-        .catch((rea) => {});
+        .catch((rea) => {
+          this.getcustomerlist();
+        });
     },
     //导入用户
-    uploadExcelAll(){
-       this.$refs.upload.submit();
-       this.dialogVisible = false
+    uploadExcelAll() {
+      this.$refs.upload.submit();
+      this.dialogVisible = false;
     },
     //定义excel
     uploadFile(e) {
@@ -344,7 +375,7 @@ export default {
 }
 .filterBox {
   text-align: left;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   .el-input {
     width: auto;
     margin-left: 20px;
@@ -355,7 +386,7 @@ export default {
 }
 .block {
   float: right;
-  margin-top: 20px;
+  margin-top: 15px;
   padding-right: 20px;
 }
 .controlopen {
@@ -402,7 +433,7 @@ export default {
     padding: 0 20px;
   }
 }
-.sub{
+.sub {
   margin-left: 20px;
 }
 </style>
