@@ -77,6 +77,33 @@ export const routes = [
         name: 'Democraticappraisallist',
         meta: {
           title: '评议列表',
+        },
+      },
+      {
+        path: 'addcommentllist',
+        component: () => import('@/views/Democraticappraisal/addcomment'),
+        name: 'addcommentllist',
+        meta: {
+          title: '发起评议',
+        },
+      }
+    ]
+  },
+  {
+    path: '/Summaryofexperience',
+    component: Layout,
+    name: 'Summaryofexperience',
+    meta: {
+      title: '心得总结',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'Summaryofexperiencelist',
+        component: () => import('@/views/Summaryofexperience/index'),
+        name: 'Summaryofexperiencelist',
+        meta: {
+          title: '总结列表',
         }
       }
     ]
@@ -86,7 +113,7 @@ export const routes = [
     component: Layout,
     name: 'Thoughtreport',
     meta: {
-      title: '心得总结',
+      title: '思想汇报',
       icon: 'nested'
     },
     children: [
@@ -94,25 +121,6 @@ export const routes = [
         path: 'Thoughtreportlist',
         component: () => import('@/views/Thoughtreport/index'),
         name: 'Thoughtreportlist',
-        meta: {
-          title: '总结列表',
-        }
-      }
-    ]
-  },
-  {
-    path: '/Summaryofexperience',
-    component: Layout,
-    name: 'Summaryofexperience',
-    meta: {
-      title: '思想汇报',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'Summaryofexperiencelist',
-        component: () => import('@/views/Summaryofexperience/index'),
-        name: 'Summaryofexperiencelist',
         meta: {
           title: '汇报列表',
         }

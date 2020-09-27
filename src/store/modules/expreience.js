@@ -4,7 +4,7 @@ const getDefaultState = () => { return {} }
 const state = getDefaultState()
 const mutations = {}
 const actions = {
-    // 获取帖子列表
+    // 获取总结列表
     getAllexpreience({ commit }, msg) {
         return new Promise((resolve, reject) => {
             expreiencelist(msg).then(response => {

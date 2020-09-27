@@ -9,6 +9,7 @@ import newpaper from './modules/newpaper'
 import interaction from './modules/interaction'
 import expreience from './modules/expreience'
 import Thoughtreport from './modules/Thoughtreport'
+import Democraticappraisal from './modules/Democraticappraisal'
 
 Vue.use(Vuex)
 
@@ -22,6 +23,7 @@ const store = new Vuex.Store({
     interaction,
     expreience,
     Thoughtreport,
+    Democraticappraisal,
   },
   getters
 })

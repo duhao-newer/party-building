@@ -1,13 +1,13 @@
-import { expreiencelist ,checkAll} from '@/api/Thoughtreport'
+import { reportlist ,checkAll} from '@/api/Thoughtreport'
 
 const getDefaultState = () => { return {} }
 const state = getDefaultState()
 const mutations = {}
 const actions = {
-    // 获取帖子列表
+    // 获取思想汇报列表
     getAllexpreience({ commit }, msg) {
         return new Promise((resolve, reject) => {
-            expreiencelist(msg).then(response => {
+            reportlist(msg).then(response => {
                 resolve(response)
             }).catch(error => {
                 reject(error)

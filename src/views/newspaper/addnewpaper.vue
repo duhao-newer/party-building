@@ -33,7 +33,7 @@
           ref="upload"
           :show-file-list="true"
           :http-request="uploadFile"
-          :auto-upload="false"
+          :auto-upload="true"
         >
           <img v-if="imageUrl" :src="imageUrl" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -102,6 +102,7 @@ export default {
     // };
     //自定义获取图片
     uploadFile(e) {
+      console.log(e.file)
       const form = new FormData(); // FormData 对象
       form.append("pic", e.file); // 文件对象
       form.append("title", this.form.title); // 文件对象

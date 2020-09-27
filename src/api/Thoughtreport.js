@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-//获取新闻列表
+//获取思想汇报列表
 export function reportlist(data) {
     return request({
         url: '/report/pageQuery',

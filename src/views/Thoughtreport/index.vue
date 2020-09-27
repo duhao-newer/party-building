@@ -20,7 +20,12 @@
       ></el-table-column>
       <el-table-column label="状态" width="240">
         <template slot-scope="scope">
-          <el-tag>{{ scope.row.is_accept | status }}</el-tag>
+          <el-tag class="gray" v-if="scope.row.is_accept == 0">{{
+            scope.row.is_accept | status
+          }}</el-tag>
+          <el-tag class="green" v-if="scope.row.is_accept == 1">{{
+            scope.row.is_accept | status
+          }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="时间" width="240">
@@ -28,10 +33,10 @@
           scope.row.create_time | formatDate
         }}</template>
       </el-table-column>
-      <el-table-column prop="reason" label="理由" width="280"></el-table-column>
+      <el-table-column prop="reason" label="理由"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="success" @click="check(scope)"
+          <el-button size="mini" type="primary" @click="check(scope)"
             >查看</el-button
           >
         </template>
@@ -72,7 +77,7 @@ export default {
       tableData: [], //表格内容
       checkboxData: [], //多选框选中的
       page: 1, //分页
-      limit: 8, //每页限制的信息数
+      limit: 10, //每页限制的信息数
       total: 99, //总的信息数
       flag: false, //控制状态颜色
     };
@@ -83,11 +88,11 @@ export default {
       return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     },
     status(msg) {
-      if (msg == 0) {
-        return "未审核";
-      } else {
-        return "通过";
-      }
+      let status = {
+        0: "未审核",
+        1: "通过",
+      };
+      return status[msg];
     },
   },
   methods: {
@@ -102,7 +107,7 @@ export default {
     //获取思想汇报列表
     getlist() {
       this.$store
-        .dispatch("expreience/getAllexpreience", {
+        .dispatch("Thoughtreport/getAllexpreience", {
           page: this.page,
           limit: this.limit,
         })
@@ -130,8 +135,17 @@ export default {
             arr.push({ id: item.id + "" });
           });
           this.$store
-            .dispatch("expreience/checkAllexpreience", { reportIds: arr })
-            .then((res) => {});
+            .dispatch("Thoughtreport/checkAllexpreience", { reportIds: arr })
+            .then((res) => {
+              if (res.status != 0) {
+                return this.$message.error(res.massage);
+              }
+              this.$message({
+                message: "批量审核成功~",
+                type: "success",
+              });
+              this.getlist();
+            });
         })
         .catch(() => {
           this.getlist();
@@ -154,6 +168,11 @@ export default {
   padding-right: 20px;
 }
 .gray {
-  color: gray;
+  color: #515d6f;
+  background-color: #e4e8f1;
+}
+.green {
+  color: #26cf6d;
+  background-color: #e3f6eb;
 }
 </style>
