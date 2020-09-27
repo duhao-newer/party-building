@@ -12,17 +12,15 @@
         type="selection"
         size="medium"
       ></el-table-column>
-      <el-table-column prop="user_id" label="ID" width="80"></el-table-column>
+      <el-table-column prop="user_id" label="ID" width="100"></el-table-column>
       <el-table-column
         label="用户名"
         prop="username"
-        width="250"
+        width="240"
       ></el-table-column>
       <el-table-column label="状态" width="240">
         <template slot-scope="scope">
-          <el-tag :class="{ gray: flag }">{{
-            scope.row.is_accept | status
-          }}</el-tag>
+          <el-tag>{{ scope.row.is_accept | status }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="时间" width="240">
@@ -30,7 +28,7 @@
           scope.row.create_time | formatDate
         }}</template>
       </el-table-column>
-      <el-table-column prop="reason" label="理由" width="240"></el-table-column>
+      <el-table-column prop="reason" label="理由" width="280"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" type="success" @click="check(scope)"
@@ -154,10 +152,6 @@ export default {
   float: right;
   margin-top: 15px;
   padding-right: 20px;
-}
-.green {
-  color: chartreuse;
-  background-color: #fff;
 }
 .gray {
   color: gray;

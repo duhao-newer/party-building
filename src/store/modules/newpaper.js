@@ -1,4 +1,4 @@
-import { newspaperlist, newtype, addnews, delnews } from '@/api/newpaper'
+import { newspaperlist, newtype, addnews, delnews,getnewsById,updateNewsById } from '@/api/newpaper'
 
 const getDefaultState = () => { return {} }
 const state = getDefaultState()
@@ -38,6 +38,26 @@ const actions = {
     delnewspaper({ commit }, msg) {
         return new Promise((resolve, reject) => {
             delnews(msg).then(res => {
+                resolve(res)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+     //回显新闻
+     getnewspaperById({ commit }, msg) {
+        return new Promise((resolve, reject) => {
+            getnewsById(msg).then(res => {
+                resolve(res)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+     //编辑新闻
+     updatenewspaperById({ commit }, msg) {
+        return new Promise((resolve, reject) => {
+            updateNewsById(msg).then(res => {
                 resolve(res)
             }).catch(error => {
                 reject(error)

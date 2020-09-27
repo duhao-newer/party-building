@@ -31,10 +31,9 @@
           class="avatar-uploader"
           action
           ref="upload"
-          :show-file-list="false"
+          :show-file-list="true"
           :http-request="uploadFile"
           :auto-upload="false"
-          :before-upload="beforeAvatarUpload"
         >
           <img v-if="imageUrl" :src="imageUrl" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -44,7 +43,10 @@
         <quill-editor ref="text" v-model="content" class="quill-editor" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click.prevent="onSubmit('form')" class="submit"
+        <el-button
+          type="primary"
+          @click.prevent="onSubmit('form')"
+          class="submit"
           >立即提交</el-button
         >
         <el-button type="primary" @click.prevent="cancel()">取消</el-button>
@@ -63,11 +65,7 @@ export default {
   },
   data() {
     return {
-      form: {
-        // title,
-        // author,
-        // titleDesc,
-      }, //表单的数据
+      form: {}, //表单的数据
       options: [], //下拉框的数据
       value: "", //下拉框选中的数据
       content: "", // 富文本框的内容
@@ -102,7 +100,6 @@ export default {
     // fr.onload = () => {
     // this.img = fr.result;
     // };
-
     //自定义获取图片
     uploadFile(e) {
       const form = new FormData(); // FormData 对象
@@ -133,25 +130,13 @@ export default {
     cancel() {
       this.$router.push("/newspaper/newspaperlist");
     },
-    //对图片的校验图片
-    beforeAvatarUpload() {
-      // const isJPG = file.type === "image/jpeg";
-      // const isLt2M = file.size / 1024 / 1024 < 2;
-      // if (!isJPG) {
-      //   this.$message.error("上传头像图片只能是 JPG 格式!");
-      // }
-      // if (!isLt2M) {
-      //   this.$message.error("上传头像图片大小不能超过 2MB!");
-      // }
-      // return isJPG && isLt2M;
-    },
   },
   components: {
     quillEditor,
   },
 };
 </script>
-// <style lang="scss">
+<style lang="scss">
 .main {
   padding: 20px 20px;
 }

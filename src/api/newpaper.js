@@ -33,3 +33,22 @@ export function delnews(data) {
         data
     })
 }
+//回显数据
+export function getnewsById(data) {
+    return request({
+        url: '/news/getNewsById',
+        method: 'post',
+        data
+    })
+}
+//编辑数据
+export function updateNewsById(data) {
+    return request({
+        url: '/news/updateNewsById',
+        method: 'post',
+        contentType: "multipart/form-data",
+        processData: false, //告诉jquery不要对form进行处理
+        contentType: false, //指定为false才能形成正确的Content-Type
+        data
+    })
+}

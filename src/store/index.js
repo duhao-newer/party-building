@@ -8,6 +8,7 @@ import customer from './modules/customer'
 import newpaper from './modules/newpaper'
 import interaction from './modules/interaction'
 import expreience from './modules/expreience'
+import Thoughtreport from './modules/Thoughtreport'
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ const store = new Vuex.Store({
     newpaper,
     interaction,
     expreience,
+    Thoughtreport,
   },
   getters
 })

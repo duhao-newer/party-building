@@ -12,7 +12,7 @@
         type="selection"
         size="medium"
       ></el-table-column>
-      <el-table-column prop="user_id" label="#" width="80"></el-table-column>
+      <el-table-column prop="id" label="#" width="80"></el-table-column>
       <el-table-column
         label="用户名"
         prop="username"
@@ -42,13 +42,13 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 批量重置密码 -->
+    <!-- 批量删除 -->
     <el-button
       type="danger"
       icon="el-icon-delete"
       class="del"
       @click="deleteAll()"
-      >批量重置密码</el-button
+      >批量删除</el-button
     >
     <!-- 分页模板 -->
     <div class="block">
@@ -69,28 +69,16 @@
 <script>
 import { formatDate } from "@/utils/index.js";
 export default {
-  created(){
+  created() {
     this.getallaction();
   },
   data() {
     return {
-      tableData: [
-        {
-          forum_id: "16900968221F474681DF4DBDA121903A",
-          user_id: 1,
-          username: "党代表",
-          header:
-            "http://oowantxlb.bkt.clouddn.com/FtiXtvtPAonyJW8nDcIUjQ-7m-7v",
-          create_time: "2017-05-15T07:08:11.000Z",
-          is_priv: 0,
-          content: "讨论一下习平总书记讲话精神",
-          type: 0,
-          num: 0,
-        },
-      ], //表格的内容
-      limit:10,//每页的帖子数
-      page:1,//当前的页码
-      total:5,//总的帖子数
+      tableData: [], //表格的内容
+      limit: 10, //每页的帖子数
+      page: 1, //当前的页码
+      total: 5, //总的帖子数
+      checkboxData: [], //多选框的内容
     };
   },
   filters: {
@@ -101,20 +89,88 @@ export default {
   },
   methods: {
     //获取帖子列表
-    getallaction(){
-        this.$store
-        .dispatch("interaction/interactionlist", { page: this.page, limit: this.limit })
-        .then((res) => {
-           
+    getallaction() {
+      this.$store
+        .dispatch("interaction/interactionlist", {
+          page: this.page,
+          limit: this.limit,
         })
+        .then((res) => {
+          this.tableData = res.data;
+          this.tableData.forEach((item,index)=>{
+            item.id=index+1;
+          })
+          this.total = res.total;
+        });
     },
     //多选框的内容
-    changeFun() {},
+    changeFun(val) {
+      this.checkboxData = val;
+    },
     //删除帖子
-    del() {},
+    del(scope) {
+      this.$confirm("你确定要重置密码吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$store
+            .dispatch("interaction/deleteinteraction", {
+              ForumId: scope.row.forum_id + "",
+            })
+            .then((res) => {
+              if (res.status != 0) {
+                return this.$message.error("网络出错了~");
+              }
+              this.$message({
+                message: "删除成功~",
+                type: "success",
+              });
+              this.tableData.splice(scope.$index, 1);
+            });
+        })
+        .catch((rea) => {});
+    },
     //分页
-    changepage() {},
-
+    changepage() {
+      this.getallaction();
+    },
+    //批量删除帖子
+    deleteAll() {
+      if (this.checkboxData.length == 0) {
+        return this.$message({
+          message: "请先选择要删除的帖子~",
+          type: "warning",
+        });
+      }
+      this.$confirm("你确定要删除这些帖子吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          let arr = [];
+          this.checkboxData.forEach((item) => {
+            arr.push({ id: item.forum_id + "" });
+          });
+          this.$store
+            .dispatch("interaction/deleteallinteraction", { forumIds: arr })
+            .then((res) => {
+              if (res.status != 0) {
+                return this.$message.error("网络出错了~");
+              }
+              this.getallaction();
+              this.$message({
+                message: "删除帖子密码成功~",
+                type: "success",
+              });
+            });
+        })
+        .catch((rea) => {
+          this.getallaction();
+        });
+    },
   },
 };
 </script>
