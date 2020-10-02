@@ -24,3 +24,19 @@ export function addcomment(data){
        data
     })
 }
+//查看评议
+export function findcommentById(data){
+    return request({
+       url:"/comment/selectById",
+       method:"post",
+       data
+    })
+}
+//修改评议
+export function updatecommentById(data){
+    return request({
+       url:"/comment/updateById",
+       method:"post",
+       data
+    })
+}

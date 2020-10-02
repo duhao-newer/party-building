@@ -114,7 +114,7 @@
             :auto-upload="false"
             :file-list="phonelist"
           >
-            <img v-if="imageUrl" :src="imageUrl + '.jpg'" class="avatar" />
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -168,7 +168,7 @@ export default {
       imageUrl: "", //存放选中的图片
       content: "", //富文本框的内容
       id: "", //存放编辑的id
-      phonelist:[{url:''}],//存放回显的图片
+      phonelist: [], //存放回显的图片
       rules: {
         title: [{ required: true, message: "请输入新闻标题", trigger: "blur" }],
         author: [
@@ -214,7 +214,8 @@ export default {
     },
     //查询新闻类型
     findnewpaper() {
-      // if (!this.value)  return this.$message({ message: "请先选择新闻类型", type: "warning" });
+      if (!this.value)
+        return this.$message({ message: "请先选择新闻类型", type: "warning" });
       this.loading = true;
       this.$store
         .dispatch("newpaper/paperlist", {
@@ -233,7 +234,7 @@ export default {
     },
     //编辑的回显
     edit(scope) {
-      console.log(this.phonelist)
+      console.log(this.phonelist);
       this.dialogVisible = true;
       this.id = scope.row.news_id;
       this.$store
@@ -241,20 +242,23 @@ export default {
           newID: scope.row.news_id + "",
         })
         .then((res) => {
+          console.log(res.data);
           this.form.title = res.data.title;
           this.form.author = res.data.author;
           this.form.titleDesc = res.data.titleDesc;
           this.value1 = res.data.typeName;
           this.content = res.data.content;
-          this.phonelist=[{url:''}];
-          this.phonelist.forEach(item=>{
-            item.url=res.data.pic;
-          })
+          this.phonelist = [];
+          let obj = {};
+          obj.name = "1.jpg";
+          obj.url = "http://118.178.85.48:4000" + res.data.pic;
+          this.phonelist.push(obj);
+          this.imageUrl = "http://118.178.85.48:4000" + res.data.pic;
         });
     },
     //编辑提交
     onSubmit() {
-      this.$refs.forms.submit();
+      // this.$refs.forms.submit();
     },
     //删除
     del(scpoe) {
@@ -348,7 +352,7 @@ export default {
           message: "更新新闻成功~",
           type: "success",
         });
-        this.dialogVisible=false;
+        this.dialogVisible = false;
       });
     },
   },

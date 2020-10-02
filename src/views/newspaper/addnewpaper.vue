@@ -29,14 +29,14 @@
       <el-form-item label="新闻图片">
         <el-upload
           class="avatar-uploader"
-          action
+          action="myUrl"
           ref="upload"
-          :show-file-list="true"
-          :http-request="uploadFile"
-          :auto-upload="true"
+          :limit="1"
+          :http-request="uploadFiles"
+          :auto-upload="false"
+          list-type="picture-card"
         >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          <i class="el-icon-plus"></i>
         </el-upload>
       </el-form-item>
       <el-form-item label="新闻内容" prop="content">
@@ -86,6 +86,8 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          if(!this.value) return this.$message.warning("新闻类型不能为空~");
+          if(!this.content) return this.$message.warning("新闻内容不能为空~");
           this.$refs.upload.submit();
         } else {
           console.log("error submit!!");
@@ -100,9 +102,7 @@ export default {
     // fr.onload = () => {
     // this.img = fr.result;
     // };
-    //自定义获取图片
-    uploadFile(e) {
-      console.log(e.file)
+    uploadFiles(e) {
       const form = new FormData(); // FormData 对象
       form.append("pic", e.file); // 文件对象
       form.append("title", this.form.title); // 文件对象

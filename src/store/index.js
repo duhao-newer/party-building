@@ -10,6 +10,7 @@ import interaction from './modules/interaction'
 import expreience from './modules/expreience'
 import Thoughtreport from './modules/Thoughtreport'
 import Democraticappraisal from './modules/Democraticappraisal'
+import Rotationchart from './modules/Rotationchart'
 
 Vue.use(Vuex)
 
@@ -24,6 +25,7 @@ const store = new Vuex.Store({
     expreience,
     Thoughtreport,
     Democraticappraisal,
+    Rotationchart
   },
   getters
 })

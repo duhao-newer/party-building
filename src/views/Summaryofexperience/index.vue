@@ -77,7 +77,7 @@ export default {
       tableData: [], //表格内容
       checkboxData: [], //多选框选中的
       page: 1, //分页
-      limit: 10, //每页限制的信息数
+      limit: 9, //每页限制的信息数
       total: 99, //总的信息数
       flag: false, //控制状态颜色
     };

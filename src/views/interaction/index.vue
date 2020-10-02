@@ -24,12 +24,12 @@
         width="280"
         :show-overflow-tooltip="true"
       ></el-table-column>
-      <el-table-column label="跟帖" width="280">
+      <el-table-column label="跟帖">
         <template slot-scope="scope">
           <el-tag>{{ scope.row.is_priv }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="发布时间" width="220">
+      <el-table-column label="发布时间">
         <template slot-scope="scope">{{
           scope.row.create_time | formatDate
         }}</template>
