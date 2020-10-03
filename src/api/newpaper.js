@@ -52,3 +52,11 @@ export function updateNewsById(data) {
         data
     })
 }
+//生成轮播图
+export function carousel(data) {
+    return request({
+        url: '/carousel/insertById',
+        method: 'post',
+        data
+    })
+}

@@ -31,12 +31,21 @@
           class="avatar-uploader"
           action="myUrl"
           ref="upload"
-          :limit="1"
           :http-request="uploadFiles"
+          :on-change="changes"
+          :on-remove="removes"
           :auto-upload="false"
           list-type="picture-card"
         >
           <i class="el-icon-plus"></i>
+            <div
+              class="el-upload__tip"
+              slot="tip"
+              style="color: red"
+              v-show="flag"
+            >
+              提示：请选择图片
+            </div>
         </el-upload>
       </el-form-item>
       <el-form-item label="新闻内容" prop="content">
@@ -65,11 +74,12 @@ export default {
   },
   data() {
     return {
-      form: {}, //表单的数据
-      options: [], //下拉框的数据
+      form: {},//表单的数据
+      options: [],//下拉框的数据
       value: "", //下拉框选中的数据
-      content: "", // 富文本框的内容
-      imageUrl: "", //获取到的图片
+      content: "",//富文本框的内容
+      imageUrl: "",//获取到的图片
+      flag:true,//提示
       rules: {
         title: [{ required: true, message: "请输入新闻标题", trigger: "blur" }],
         author: [
@@ -86,8 +96,8 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if(!this.value) return this.$message.warning("新闻类型不能为空~");
-          if(!this.content) return this.$message.warning("新闻内容不能为空~");
+          if (!this.value) return this.$message.warning("新闻类型不能为空~");
+          if (!this.content) return this.$message.warning("新闻内容不能为空~");
           this.$refs.upload.submit();
         } else {
           console.log("error submit!!");
@@ -105,7 +115,7 @@ export default {
     uploadFiles(e) {
       const form = new FormData(); // FormData 对象
       form.append("pic", e.file); // 文件对象
-      form.append("title", this.form.title); // 文件对象
+      form.append("title", this.form.title+''); // 文件对象
       form.append("author", this.form.author); // 文件对象
       form.append("titleDesc", this.form.titleDesc); // 文件对象
       form.append("type", this.value); // 文件对象
@@ -131,6 +141,19 @@ export default {
     cancel() {
       this.$router.push("/newspaper/newspaperlist");
     },
+    //上传图片
+    changes(file, fileList) {
+      this.flag=false;
+      if (fileList.length > 1) {
+        fileList.shift();
+      }
+    },
+    //phonelist改变
+    removes(file, fileList){
+       if(!fileList.length){
+        this.flag=true;
+      }
+    }
   },
   components: {
     quillEditor,

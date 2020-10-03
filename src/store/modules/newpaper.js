@@ -1,4 +1,4 @@
-import { newspaperlist, newtype, addnews, delnews,getnewsById,updateNewsById } from '@/api/newpaper'
+import { newspaperlist,carousel, newtype, addnews, delnews,getnewsById,updateNewsById } from '@/api/newpaper'
 
 const getDefaultState = () => { return {} }
 const state = getDefaultState()
@@ -58,6 +58,17 @@ const actions = {
      updatenewspaperById({ commit }, msg) {
         return new Promise((resolve, reject) => {
             updateNewsById(msg).then(res => {
+                resolve(res)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+    //生成轮播图
+    Docarousel({ commit }, msg) {
+        return new Promise((resolve, reject) => {
+            carousel(msg).then(res => {
+                console.log(res);
                 resolve(res)
             }).catch(error => {
                 reject(error)

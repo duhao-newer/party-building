@@ -24,3 +24,27 @@ export function deletecarousel(data){
        data
     })
 }
+//回显轮播图
+export function findcarouselById(data){
+    return request({
+       url:"/carousel/selectByID",
+       method:"post",
+       data
+    })
+}
+//新增轮播图
+export function insertcarousel(data){
+    return request({
+       url:"/carousel/insertById",
+       method:"post",
+       data
+    })
+}
+//编辑轮播图
+export function updatecarousel(data){
+    return request({
+       url:"/carousel/updateById",
+       method:"post",
+       data
+    })
+}

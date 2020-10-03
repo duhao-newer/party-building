@@ -6,8 +6,10 @@ const mutations = {}
 const actions = {
     // 获取总结列表
     getAllexpreience({ commit }, msg) {
+        console.log(msg)
         return new Promise((resolve, reject) => {
             expreiencelist(msg).then(response => {
+                console.log(response)
                 resolve(response)
             }).catch(error => {
                 reject(error)

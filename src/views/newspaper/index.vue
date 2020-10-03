@@ -30,10 +30,9 @@
       <el-table-column
         label="标题"
         prop="title"
-        width="350"
         :show-overflow-tooltip="true"
       ></el-table-column>
-      <el-table-column label="发布时间" width="280">
+      <el-table-column label="发布时间">
         <template slot-scope="scope">{{
           scope.row.update_time | formatDate
         }}</template>
@@ -47,7 +46,7 @@
           <el-button size="mini" type="danger" @click="del(scope)"
             >删除</el-button
           >
-          <el-button size="mini" type="primary" @click="edit(scope)"
+          <el-button size="mini" type="primary" @click="editDocarousel(scope)"
             >生成轮播图</el-button
           >
         </template>
@@ -108,14 +107,15 @@
             class="avatar-uploader"
             action
             ref="forms"
-            :limit="1"
-            :show-file-list="true"
             :http-request="uploadFile"
             :auto-upload="false"
+            :on-remove="removes"
+            list-type="picture-card"
+            :on-change="changefile"
             :file-list="phonelist"
           >
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <i v-else class="el-icon-plus"></i>
           </el-upload>
         </el-form-item>
         <el-form-item label="新闻内容" prop="content">
@@ -133,6 +133,29 @@
           >
         </el-form-item>
       </el-form>
+    </el-dialog>
+    <!-- 生成轮播图弹出框 -->
+    <el-dialog title="轮播图" :visible.sync="dialogVisibles" width="28%">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="优先级">
+          <el-radio-group v-model="priority">
+            <el-radio :label="0">一级</el-radio>
+            <el-radio :label="1">二级</el-radio>
+            <el-radio :label="2">三级</el-radio>
+            <el-radio :label="3">四级</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-radio-group v-model="radio">
+            <el-radio :label="1">启用</el-radio>
+            <el-radio :label="0">禁用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisibles = false">取 消</el-button>
+        <el-button type="primary" @click="Docarousel()">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -156,19 +179,23 @@ export default {
       limit: 8, //每页限制的信息数
       total: 99, //总的信息数
       checkboxData: [], //多选框选中的
-      flag: false, //控制提交
       loading: false, //加载
-      dialogVisible: false, //弹出层
+      dialogVisible: false, //编辑弹出层
+      dialogVisibles: false, //生成轮播图弹出层
       form: {
         title: "",
         titleDesc: "",
         author: "",
       }, //编辑的内容
+      carousel: {}, //轮播图的内容
       value1: "", //编辑选中的新闻类型
-      imageUrl: "", //存放选中的图片
+      imageUrl: "", //存放选中的图片的路径
       content: "", //富文本框的内容
       id: "", //存放编辑的id
-      phonelist: [], //存放回显的图片
+      priority: 1, //选择轮播图优先级
+      radio: 1, //选择轮播图状态
+      status: false, //控制编辑是否修改图片
+      phonelist: [], //存放图片
       rules: {
         title: [{ required: true, message: "请输入新闻标题", trigger: "blur" }],
         author: [
@@ -234,7 +261,7 @@ export default {
     },
     //编辑的回显
     edit(scope) {
-      console.log(this.phonelist);
+      this.phonelist = [];
       this.dialogVisible = true;
       this.id = scope.row.news_id;
       this.$store
@@ -242,23 +269,54 @@ export default {
           newID: scope.row.news_id + "",
         })
         .then((res) => {
-          console.log(res.data);
           this.form.title = res.data.title;
           this.form.author = res.data.author;
           this.form.titleDesc = res.data.titleDesc;
           this.value1 = res.data.typeName;
           this.content = res.data.content;
-          this.phonelist = [];
-          let obj = {};
-          obj.name = "1.jpg";
-          obj.url = "http://118.178.85.48:4000" + res.data.pic;
-          this.phonelist.push(obj);
           this.imageUrl = "http://118.178.85.48:4000" + res.data.pic;
         });
     },
     //编辑提交
-    onSubmit() {
-      // this.$refs.forms.submit();
+    onSubmit(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if (!this.content) return this.$message.warning("新闻内容不能为空~");
+          //判断是否选择了图片
+          if (this.status) {
+            this.$refs.forms.submit();
+          } else {
+            let newtype = this.options.find((item) => {
+              return (
+                item.typeName == this.value1 || item.newsType_id == this.value1
+              );
+            });
+            const form = new FormData(); // FormData 对象
+            form.append("title", this.form.title); // 文件对象
+            form.append("author", this.form.author); // 文件对象
+            form.append("titleDesc", this.form.titleDesc); // 文件对象
+            form.append("type", newtype.newsType_id); // 文件对象
+            form.append("content", this.content); // 文件对象
+            form.append("newID", this.id); // 文件对象
+            this.$store
+              .dispatch("newpaper/updatenewspaperById", form)
+              .then((res) => {
+                if (res.status != 0) {
+                  return this.$message.error(res.massage);
+                }
+                this.$message({
+                  message: "更新新闻成功~",
+                  type: "success",
+                });
+                this.getnewpaper();
+                this.dialogVisible = false;
+              });
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
     //删除
     del(scpoe) {
@@ -340,7 +398,6 @@ export default {
       form.append("title", this.form.title); // 文件对象
       form.append("author", this.form.author); // 文件对象
       form.append("titleDesc", this.form.titleDesc); // 文件对象
-      this.options.includes(this.value1);
       form.append("type", newtype.newsType_id); // 文件对象
       form.append("content", this.content); // 文件对象
       form.append("newID", this.id); // 文件对象
@@ -352,8 +409,48 @@ export default {
           message: "更新新闻成功~",
           type: "success",
         });
+        this.getnewpaper();
         this.dialogVisible = false;
       });
+    },
+    //图片改变
+    changefile(file, fileList) {
+      this.status = true;
+      this.imageUrl = "";
+      if (fileList.length > 1) {
+        fileList.shift();
+      }
+    },
+    //生成轮播图准备数据
+    editDocarousel(scope) {
+      this.dialogVisibles = true;
+      this.carousel = {
+        title: scope.row.title,
+        url: new Date().getFullYear() + "",
+        img_url: scope.row.pic,
+        type: scope.row.type,
+      };
+    },
+    //提交生成轮播图
+    Docarousel() {
+      this.carousel.priority = this.priority;
+      this.carousel.status = this.radio;
+      this.$store.dispatch("newpaper/Docarousel", this.carousel).then((res) => {
+        if (res.status != 0) {
+          return this.$message.error(res.massage);
+        }
+        this.$message({
+          type: "success",
+          message: "生成成功!",
+        });
+        this.dialogVisibles = false;
+      });
+    },
+    //编辑删除图片
+    removes(file, fileList) {
+      if (!fileList.length) {
+        this.status = false;
+      }
     },
   },
   components: {

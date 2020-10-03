@@ -18,7 +18,7 @@
         prop="username"
         width="240"
       ></el-table-column>
-      <el-table-column label="状态" width="240">
+      <el-table-column label="状态">
         <template slot-scope="scope">
           <el-tag class="gray" v-if="scope.row.is_accept == 0">{{
             scope.row.is_accept | status
@@ -26,9 +26,12 @@
           <el-tag class="green" v-if="scope.row.is_accept == 1">{{
             scope.row.is_accept | status
           }}</el-tag>
+          <el-tag class="gray" v-if="scope.row.is_accept == 2">{{
+            scope.row.is_accept | status
+          }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="时间" width="240">
+      <el-table-column label="时间">
         <template slot-scope="scope">{{
           scope.row.create_time | formatDate
         }}</template>
@@ -47,8 +50,15 @@
       type="danger"
       icon="el-icon-delete"
       class="del"
-      @click="checkAll()"
-      >批量审核</el-button
+      @click="checkAll('1')"
+      >批量通过</el-button
+    >
+    <el-button
+      type="danger"
+      icon="el-icon-delete"
+      class="del"
+      @click="checkAll(2)"
+      >批量未通过</el-button
     >
     <!-- 分页模板 -->
     <div class="block">
@@ -89,8 +99,9 @@ export default {
     },
     status(msg) {
       let status = {
-        0: "未审核",
+        0: "审核中",
         1: "通过",
+        2: "未通过",
       };
       return status[msg];
     },
@@ -108,6 +119,7 @@ export default {
     getlist() {
       this.$store
         .dispatch("Thoughtreport/getAllexpreience", {
+          istype: 1,
           page: this.page,
           limit: this.limit,
         })
@@ -117,7 +129,7 @@ export default {
         });
     },
     //批量审核
-    checkAll() {
+    checkAll(num) {
       if (this.checkboxData.length == 0) {
         return this.$message({
           message: "请先选择要审核的人员~",
@@ -135,7 +147,10 @@ export default {
             arr.push({ id: item.id + "" });
           });
           this.$store
-            .dispatch("Thoughtreport/checkAllexpreience", { reportIds: arr })
+            .dispatch("Thoughtreport/checkAllexpreience", {
+              type: num,
+              reportIds: arr,
+            })
             .then((res) => {
               if (res.status != 0) {
                 return this.$message.error(res.massage);

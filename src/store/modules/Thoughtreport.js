@@ -18,7 +18,6 @@ const actions = {
      checkAllexpreience({ commit }, msg) {
         return new Promise((resolve, reject) => {
             checkAll(msg).then(res => {
-                console.log(res)
                 resolve(res)
             }).catch(error => {
                 reject(error)

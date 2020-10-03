@@ -232,9 +232,9 @@ export default {
           this.table.push(res.data);
         });
     },
-    //给更新状态
+    //更新状态
     check(scope) {
-      this.$confirm("是否要删除所选新闻吗?", "提示", {
+      this.$confirm("是否要更改所选评议吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

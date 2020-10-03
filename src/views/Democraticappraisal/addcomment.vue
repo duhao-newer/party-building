@@ -62,7 +62,7 @@ export default {
           let h = new Date().getHours();
           let m = new Date().getMinutes();
           let s = new Date().getSeconds();
-          let commentID = year + month + day + h + m + s + 1000000000;
+          let commentID = year + month + day + h + m + s + 1000000000+'';
           let obj = {
             commentID: commentID,
             content: this.content,
