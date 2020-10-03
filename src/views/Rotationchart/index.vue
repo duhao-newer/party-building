@@ -77,7 +77,7 @@
       ></el-pagination>
     </div>
     <!-- 弹出层 -->
-    <el-dialog :visible.sync="dialogVisible" width="80%">
+    <el-dialog :visible.sync="dialogVisible" width="40%">
       <el-form
         :model="ruleForm"
         :rules="rules"
