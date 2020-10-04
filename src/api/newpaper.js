@@ -60,3 +60,11 @@ export function carousel(data) {
         data
     })
 }
+//清理垃圾图片
+export function clearphone(data) {
+    return request({
+        url: '/operation/selectAllURL',
+        method: 'post',
+        data
+    })
+}

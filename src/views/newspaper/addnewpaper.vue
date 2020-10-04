@@ -113,6 +113,7 @@ export default {
     // this.img = fr.result;
     // };
     uploadFiles(e) {
+      console.log(e);
       const form = new FormData(); // FormData 对象
       form.append("pic", e.file); // 文件对象
       form.append("title", this.form.title+''); // 文件对象

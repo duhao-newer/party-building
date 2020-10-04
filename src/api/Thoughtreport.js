@@ -15,3 +15,19 @@ export function checkAll(data) {
         data
     })
 }
+//查看详情
+export function selectById(data) {
+    return request({
+        url: '/report/selectById',
+        method: 'post',
+        data
+    })
+}
+//审核
+export function updateAcceptById(data) {
+    return request({
+        url: '/report/updateAccept',
+        method: 'post',
+        data
+    })
+}

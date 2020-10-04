@@ -171,6 +171,25 @@ export const routes = [
     component: Layout,
     redirect: '/customer',
   },
+  {
+    path: '/store',
+    component: Layout,
+    name: '数据库',
+    meta: {
+      title: '清理数据库',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: '/storelist',
+        component: () => import('@/views/stores/index'),
+        name: 'newspaperlist',
+        meta: {
+          title: '清理垃圾图片',
+        }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

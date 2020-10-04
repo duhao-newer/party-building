@@ -42,6 +42,9 @@
           <el-button size="mini" type="primary" @click="check(scope)"
             >查看</el-button
           >
+          <el-button size="mini" type="primary" @click="Examine(scope)"
+            >审核</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -74,6 +77,63 @@
         @next-click="changepage"
       ></el-pagination>
     </div>
+    <!-- 查看 -->
+    <el-dialog title="详情" :visible.sync="dialogVisible" width="30%">
+      <el-table :data="tableDatas" style="width: 100%">
+        <el-table-column
+          label="缩略图"
+          align="center"
+          height="30px"
+          width="200"
+        >
+          <template slot-scope="scope">
+            <el-popover placement="right" title="" trigger="hover">
+              <img :src="scope.row.pic_url" />
+              <img
+                slot="reference"
+                :src="scope.row.pic_url"
+                style="max-height: 50px; max-width: 80px"
+              />
+            </el-popover>
+          </template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <!-- 审核 -->
+    <el-dialog title="审核" :visible.sync="dialogVisibles" width="60%">
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="审核结果" prop="type">
+          <el-radio-group v-model="ruleForm.type">
+            <el-radio label="1">通过</el-radio>
+            <el-radio label="2">未通过</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="审判原因" prop="reason">
+          <el-input type="textarea" v-model="ruleForm.reason"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            type="primary"
+            class="submit"
+            @click="submitForm('ruleForm')"
+            >提 交</el-button
+          >
+          <el-button @click="resetForm">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -90,6 +150,19 @@ export default {
       limit: 9, //每页限制的信息数
       total: 99, //总的信息数
       flag: false, //控制状态颜色
+      dialogVisible: false, //查看弹出框
+      dialogVisibles: false, //审核弹出框
+      tableDatas: [], //弹出框的内容
+      ruleForm: {
+        type: "",
+        reason: "",
+      }, //审核表单
+      id: "", //存放编辑的id
+      rules: {
+        reason: [
+          { required: true, message: "请输入审判原因", trigger: "blur" },
+        ],
+      },
     };
   },
   filters: {
@@ -167,7 +240,56 @@ export default {
         });
     },
     //查看
-    check(scope) {},
+    check(scope) {
+      this.dialogVisible = true;
+      this.$store
+        .dispatch("Thoughtreport/findById", { reportId: scope.row.id })
+        .then((res) => {
+          this.tableDatas = res.data;
+          this.tableDatas.forEach((item) => {
+            item.pic_url = "http://118.178.85.48:4000" + item.pic_url;
+          });
+        });
+    },
+    //审核
+    submitForm(ruleForm) {
+      this.$refs[ruleForm].validate((valid) => {
+        if (valid) {
+          if (!this.ruleForm.type)
+            return this.$message.warning("请先选择审核结果~");
+          this.$store
+            .dispatch("Thoughtreport/updateAccept", {
+              type: parseInt(this.ruleForm.type),
+              reportId: this.id + "",
+              reason: this.ruleForm.reason,
+            })
+            .then((res) => {
+              if (res.status != 0) {
+                return this.$message.error(res.massage);
+              }
+              this.$message({
+                message: "审核成功~",
+                type: "success",
+              });
+              this.getlist();
+              this.dialogVisibles = false;
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    //点击审核
+    Examine(scope) {
+      this.dialogVisibles = true;
+      this.id = scope.row.id;
+    },
+    //重置
+    resetForm() {
+      this.ruleForm.type = "";
+      this.ruleForm.reason = "";
+    },
   },
 };
 </script>
@@ -191,5 +313,8 @@ export default {
 .green {
   color: #26cf6d;
   background-color: #e3f6eb;
+}
+.submit {
+  margin-left: 150px;
 }
 </style>

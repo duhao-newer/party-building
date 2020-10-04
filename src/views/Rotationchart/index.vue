@@ -126,7 +126,7 @@
             list-type="picture-card"
             :file-list="phonelist"
           >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" height="100%" width="100%"/>
             <i v-else class="el-icon-plus"></i>
           </el-upload>
         </el-form-item>
@@ -424,6 +424,6 @@ export default {
   background-color: #e3f6eb;
 }
 .submit {
-  margin-left: 300px;
+  margin-left: 150px;
 }
 </style>

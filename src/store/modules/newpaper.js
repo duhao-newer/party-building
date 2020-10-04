@@ -1,4 +1,4 @@
-import { newspaperlist,carousel, newtype, addnews, delnews,getnewsById,updateNewsById } from '@/api/newpaper'
+import { newspaperlist,carousel,clearphone, newtype, addnews, delnews,getnewsById,updateNewsById } from '@/api/newpaper'
 
 const getDefaultState = () => { return {} }
 const state = getDefaultState()
@@ -68,6 +68,16 @@ const actions = {
     Docarousel({ commit }, msg) {
         return new Promise((resolve, reject) => {
             carousel(msg).then(res => {
+                resolve(res)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+     //清理数据库图片
+     clearphones({ commit }, msg) {
+        return new Promise((resolve, reject) => {
+            clearphone(msg).then(res => {
                 console.log(res);
                 resolve(res)
             }).catch(error => {
