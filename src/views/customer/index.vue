@@ -154,6 +154,7 @@
       :visible.sync="dialogVisible"
       width="30%"
     >
+      <img src="@/icons/1.jpg" alt="网络瞌睡了" :class="{excels:falg}"/>
       <el-upload
         class="upload-demo sub"
         drag
@@ -172,6 +173,7 @@
       </el-upload>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="success" @click="falg=false">查看模板</el-button>
         <el-button type="primary" @click="uploadExcelAll()">确 定</el-button>
       </span>
     </el-dialog>
@@ -191,12 +193,20 @@ export default {
       gridData: {}, //弹出框的内容
       dialogVisible: false, //控制弹出框
       flag: false, //控制提交
+      falg: true, //控制excel的样式表
+      url: "@/icons/1.jpg", //excel预览
+      srcList: [
+        "https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg",
+        "https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg",
+      ], //预览列表
     };
   },
   created() {
     this.getcustomerlist();
   },
   methods: {
+    //查看模板
+    ecls() {},
     //监听checkboxs的值
     changeFun(val) {
       this.checkboxData = val;
@@ -364,12 +374,16 @@ export default {
           message: "导入用户信息成功~",
           type: "success",
         });
+        this.getcustomerlist();
       });
     },
   },
 };
 </script>
 <style  lang="scss">
+.excels {
+  display: none;
+}
 .dis {
   padding: 20px;
 }

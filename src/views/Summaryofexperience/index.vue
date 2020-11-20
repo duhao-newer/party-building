@@ -120,7 +120,7 @@
             <el-radio label="2">未通过</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="审判原因" prop="reason">
+        <el-form-item label="审核原因" prop="reason">
           <el-input type="textarea" v-model="ruleForm.reason"></el-input>
         </el-form-item>
         <el-form-item>

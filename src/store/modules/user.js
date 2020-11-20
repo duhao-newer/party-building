@@ -37,6 +37,7 @@ const actions = {
       login(obj).then(response => {
         const { status,token } = response
         commit('SET_TOKEN', token)
+        commit('SET_NAME','杜豪')
         setToken(token)
         resolve(status)
       }).catch(error => {

@@ -43,16 +43,19 @@
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          <svg-icon
+            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+          />
         </span>
       </el-form-item>
 
       <el-button
         :loading="loading"
         type="primary"
-        style="width:100%;margin-bottom:30px;"
+        style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-      >登录</el-button>
+        >登录</el-button
+      >
 
       <!-- <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
@@ -64,14 +67,14 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
-
+import store from "../../store";
 export default {
   name: "Login",
   data() {
     //定义校验规则
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error("请先输入用户名~"));
+        callback(new Error("请输入正确的用户名~"));
       } else {
         callback();
       }
@@ -131,13 +134,14 @@ export default {
           this.$store
             .dispatch("user/login", this.loginForm)
             .then((res) => {
-              if (res!= 0) {
+              if (res != 0) {
+			   this.loading = false;
                 return this.$message.error("用户名或密码错误~");
               }
-              this.$message({
-                message: "登录成功~",
-                type: "success",
-              });
+              // this.$message({
+              //   message: "欢迎" + store.getters.name,
+              //   type: "success",
+              // });
               this.$router.push({ path: this.redirect || "/" });
               this.loading = false;
             })

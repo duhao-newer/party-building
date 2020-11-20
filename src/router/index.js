@@ -7,13 +7,20 @@ import Layout from '@/layout'
 
 export const routes = [
   {
+    path: '/index',
+    name: 'index',
+    component: Layout,
+    meta: { title: '黄淮党建系统', icon: 'el-icon-s-home' ,needLogin:true},
+    redirect: '/customer/customerlist',
+  },
+  {
     path: '/customer',
     component: Layout,
     redirect: '/customer/customerlist',
     name: 'Customer',
     meta: {
       title: '用户管理',
-      icon: 'nested'
+      icon: 'el-icon-user-solid'
     },
     children: [
       {
@@ -30,7 +37,7 @@ export const routes = [
     name: 'Interaction',
     meta: {
       title: '党员互动',
-      icon: 'nested'
+      icon: 'el-icon-chat-dot-square'
     },
     children: [
       {
@@ -49,7 +56,7 @@ export const routes = [
     name: 'Rotationchart',
     meta: {
       title: '轮播图列表',
-      icon: 'nested'
+      icon: 'el-icon-picture' 
     },
     children: [
       {
@@ -68,7 +75,7 @@ export const routes = [
     name: 'Democraticappraisal',
     meta: {
       title: '民主评议',
-      icon: 'nested'
+      icon: 'el-icon-mic'
     },
     children: [
       {
@@ -95,7 +102,7 @@ export const routes = [
     name: 'Summaryofexperience',
     meta: {
       title: '心得总结',
-      icon: 'nested'
+      icon: 'el-icon-edit' 
     },
     children: [
       {
@@ -114,7 +121,7 @@ export const routes = [
     name: 'Thoughtreport',
     meta: {
       title: '思想汇报',
-      icon: 'nested'
+      icon: 'el-icon-s-opportunity'
     },
     children: [
       {
@@ -133,7 +140,7 @@ export const routes = [
     name: 'newspaper',
     meta: {
       title: '新闻管理',
-      icon: 'nested'
+      icon: 'el-icon-notebook-2' 
     },
     children: [
       {
@@ -176,7 +183,7 @@ export const routes = [
     component: Layout,
     name: '数据库',
     meta: {
-      title: '清理数据库',
+      title: '清理垃圾图片',
       icon: 'nested'
     },
     children: [

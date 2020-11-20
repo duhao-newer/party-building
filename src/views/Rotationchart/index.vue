@@ -13,10 +13,10 @@
         size="medium"
       ></el-table-column>
       <el-table-column prop="ids" label="#" width="80"></el-table-column>
-      <el-table-column label="缩略图" align="center" height="10px" width="200">
+      <el-table-column label="缩略图" align="center">
         <template slot-scope="scope">
           <el-popover placement="right" title="" trigger="hover">
-            <img :src="scope.row.img_url" />
+            <img :src="scope.row.img_url" style="max-height: 200px; max-width: 200px" />
             <img
               slot="reference"
               :src="scope.row.img_url"
@@ -51,7 +51,11 @@
       </el-table-column>
     </el-table>
     <!-- 批量重置密码 -->
-    <el-button type="primary" icon="el-icon-edit" class="del" @click="add()"
+    <el-button
+      type="primary"
+      icon="el-icon-edit"
+      class="del"
+      @click="add()"
       v-show="false"
       >添加</el-button
     >
@@ -126,7 +130,13 @@
             list-type="picture-card"
             :file-list="phonelist"
           >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" height="100%" width="100%"/>
+            <img
+              v-if="imageUrl"
+              :src="imageUrl"
+              class="avatar"
+              height="100%"
+              width="100%"
+            />
             <i v-else class="el-icon-plus"></i>
           </el-upload>
         </el-form-item>
@@ -362,8 +372,8 @@ export default {
       form.append("url", this.ruleForm.url); // 文件对象
       form.append("img_url", this.ruleForm.img_url); // 文件对象
       form.append("priority", parseInt(this.ruleForm.priority)); // 文件对象
-      form.append("type",status.newsType_id); // 文件对象
-      form.append("status",  parseInt(this.ruleForm.radio)); // 文件对象
+      form.append("type", status.newsType_id); // 文件对象
+      form.append("status", parseInt(this.ruleForm.radio)); // 文件对象
       form.append("carouselId", this.ruleForm.carouselId + ""); // 文件对象
       this.$store.dispatch("Rotationchart/updcarousels", form).then((res) => {
         if (res.status != 0) {

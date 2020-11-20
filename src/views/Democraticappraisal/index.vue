@@ -299,7 +299,7 @@ export default {
           let obj = {
             title_desc: this.ruleForm.title,
             is_open: status.value,
-            commentID: this.ruleForm.id,
+            commentID: this.ruleForm.id+'',
             content: this.content,
           };
           this.$store
