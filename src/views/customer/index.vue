@@ -14,6 +14,7 @@
     </div>
     <!-- 内容表格 -->
     <el-table
+      v-loading="loading"
       :data="tableData"
       style="width: 100%"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
@@ -154,7 +155,7 @@
       :visible.sync="dialogVisible"
       width="30%"
     >
-      <img src="@/icons/1.jpg" alt="网络瞌睡了" :class="{excels:falg}"/>
+      <img src="@/icons/1.jpg" alt="网络瞌睡了" :class="{ excels: falg }" />
       <el-upload
         class="upload-demo sub"
         drag
@@ -173,7 +174,7 @@
       </el-upload>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="success" @click="falg=false">查看模板</el-button>
+        <el-button type="success" @click="falg = false">查看模板</el-button>
         <el-button type="primary" @click="uploadExcelAll()">确 定</el-button>
       </span>
     </el-dialog>
@@ -199,6 +200,7 @@ export default {
         "https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg",
         "https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg",
       ], //预览列表
+      loading: true,
     };
   },
   created() {
@@ -213,14 +215,19 @@ export default {
     },
     //查询用户列表信息
     getcustomerlist() {
+      this.loading = true;
       this.$store
-        .dispatch("customer/customers", { page: this.page, limit: this.limit })
+        .dispatch("customer/customers", {
+          page: this.page,
+          limit: this.limit,
+        })
         .then((res) => {
           if (res.status != 0) {
             return this.$message.error(res.massage);
           }
           this.tableData = res.data;
           this.total = res.total;
+          this.loading = false;
         })
         .catch(() => {
           // this.loading = false;
@@ -238,6 +245,7 @@ export default {
           type: "warning",
         });
       }
+      this.loading = true;
       this.$store
         .dispatch("customer/seletecustomerBynames", {
           username: this.input.trim(),
@@ -247,6 +255,7 @@ export default {
             return this.$message.error(res.massage);
           }
           this.tableData = res.data;
+           this.loading = false;
         });
     },
     //重置密码

@@ -8,7 +8,6 @@ const actions = {
     carousellist({ commit }, msg) {
         return new Promise((resolve, reject) => {
             getallcarousel(msg).then(response => {
-                console.log(response)
                 resolve(response)
             }).catch(error => {
                 reject(error)
@@ -58,7 +57,6 @@ const actions = {
     },
     //编辑轮播图
     updcarousels({ commit }, msg) {
-        console.log(msg)
         return new Promise((resolve, reject) => {
             updatecarousel(msg).then(response => {
                 resolve(response)

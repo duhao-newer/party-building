@@ -2,6 +2,7 @@
   <div class="content">
     <!-- 内容表格 -->
     <el-table
+     v-loading="loading"
       :data="tableData"
       style="width: 100%"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
@@ -79,6 +80,7 @@ export default {
       page: 1, //当前的页码
       total: 5, //总的帖子数
       checkboxData: [], //多选框的内容
+      loading:false,
     };
   },
   filters: {
@@ -90,6 +92,7 @@ export default {
   methods: {
     //获取帖子列表
     getallaction() {
+      this.loading=true;
       this.$store
         .dispatch("interaction/interactionlist", {
           page: this.page,
@@ -101,6 +104,7 @@ export default {
             item.id=index+1;
           })
           this.total = res.total;
+            this.loading=false;
         });
     },
     //多选框的内容

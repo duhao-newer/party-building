@@ -2,6 +2,7 @@
   <div class="content">
     <!-- 内容表格 -->
     <el-table
+     v-loading="loading"
       :data="tableData"
       style="width: 100%"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
@@ -153,6 +154,7 @@ export default {
       dialogVisible: false, //查看弹出框
       dialogVisibles: false, //审核弹出框
       tableDatas: [], //弹出框的内容
+      loading:false,
       ruleForm: {
         type: "",
         reason: "",
@@ -190,6 +192,7 @@ export default {
     },
     //获取心得总结列表
     getlist() {
+      this.loading=true;
       this.$store
         .dispatch("Thoughtreport/getAllexpreience", {
           istype: 2,
@@ -199,6 +202,7 @@ export default {
         .then((res) => {
           this.tableData = res.data;
           this.total = res.total;
+           this.loading=false;
         });
     },
     //批量审核

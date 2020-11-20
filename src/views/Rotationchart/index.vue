@@ -2,6 +2,7 @@
   <div class="content">
     <!-- 内容表格 -->
     <el-table
+    v-loading="loading"
       :data="tableData"
       style="width: 100%"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
@@ -180,6 +181,7 @@ export default {
         img_url: "",
       }, //表单数据
       flag: true, //提示
+      loading:false,
       status: false, //控制编辑是否修改图片
       imageUrl: "", //修改会返回的路径
       phonelist: [], //存放图片
@@ -209,6 +211,7 @@ export default {
     },
     //获取轮播图列表
     getlist() {
+      this.loading=true;
       this.$store
         .dispatch("Rotationchart/carousellist", {
           page: this.page,
@@ -221,6 +224,7 @@ export default {
             item.img_url = "http://118.178.85.48:4000" + item.img_url;
           });
           this.total = res.total;
+           this.loading=false;
         });
     },
     //批量删除

@@ -216,6 +216,7 @@ export default {
   methods: {
     //获取新闻列表
     getnewpaper() {
+      this.loading=true;
       this.$store
         .dispatch("newpaper/paperlist", { page: this.page, limit: this.limit })
         .then((res) => {
@@ -224,6 +225,7 @@ export default {
           }
           this.tableData = res.data;
           this.total = res.total;
+           this.loading=false;
         });
     },
     //获取新闻类型

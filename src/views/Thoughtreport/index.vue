@@ -2,6 +2,7 @@
   <div class="content">
     <!-- 内容表格 -->
     <el-table
+     v-loading="loading"
       :data="tableData"
       style="width: 100%"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
@@ -158,6 +159,7 @@ export default {
         reason: "",
       }, //审核表单
       id: "", //存放编辑的id
+      loading:false,
       rules: {
         reason: [
           { required: true, message: "请输入审判原因", trigger: "blur" },
@@ -190,6 +192,7 @@ export default {
     },
     //获取思想汇报列表
     getlist() {
+      this.loading=true;
       this.$store
         .dispatch("Thoughtreport/getAllexpreience", {
           istype: 1,
@@ -202,6 +205,7 @@ export default {
             item.ids = index + 1;
           });
           this.total = res.total;
+            this.loading=false;
         });
     },
     //批量审核

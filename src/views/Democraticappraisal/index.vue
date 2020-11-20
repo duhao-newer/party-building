@@ -2,6 +2,7 @@
   <div class="content">
     <!-- 内容表格 -->
     <el-table
+      v-loading="loading"
       :data="tableData"
       style="width: 100%"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
@@ -157,6 +158,7 @@ export default {
       opens: 1, //控住提交的状态
       dialogVisible: false, //详细弹出层
       dialogVisibles: false, //修改弹出层
+      loading: false, //加载
       ruleForm: {
         title: "",
       }, //表单
@@ -209,6 +211,7 @@ export default {
     },
     //获取思想汇报列表
     getlist() {
+      this.loading = true;
       this.$store
         .dispatch("Democraticappraisal/commentlist", {
           page: this.page,
@@ -220,6 +223,7 @@ export default {
             item.ids = index + 1;
           });
           this.total = res.total;
+          this.loading = false;
         });
     },
     //描述
@@ -294,12 +298,12 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let status = this.options.find((item) => {
-            return item.value == this.value || item.lable == this.value;
+            return item.label == this.value || item.value == this.value;
           });
           let obj = {
             title_desc: this.ruleForm.title,
             is_open: status.value,
-            commentID: this.ruleForm.id+'',
+            commentID: this.ruleForm.id + "",
             content: this.content,
           };
           this.$store
